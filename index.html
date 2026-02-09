@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hours Calculator</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .calculator {
+      background-color: #fff;
+      border-radius: 16px;
+      padding: 30px;
+      width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin: 0;
+      font-size: 26px;
+      color: #0078d7;
+    }
+
+    .section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .label {
+      font-size: 14px;
+      color: #555;
+      font-weight: 600;
+    }
+
+    .inputRow {
+      display: flex;
+      gap: 12px;
+    }
+
+    .inputBox {
+      flex: 1;
+      background-color: #fafafa;
+      color: #333;
+      font-size: 16px;
+      text-align: center;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      transition: all 0.2s ease;
+    }
+
+    .inputBox:focus {
+      outline: none;
+      border-color: #0078d7;
+      box-shadow: 0 0 8px #0078d7;
+    }
+
+    .outputSection {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background-color: #fdfdfd;
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .outputTitle {
+      font-size: 16px;
+      font-weight: 600;
+      color: #444;
+    }
+
+    .outputValue {
+      font-size: 20px;
+      font-weight: bold;
+      color: #0078d7;
+      text-align: center;
+    }
+
+    .finalOutput {
+      font-size: 28px;
+      font-weight: bold;
+      color: #222;
+      text-align: center;
+    }
+
+    button {
+      padding: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      background-color: #0078d7;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #005a9e;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <h2>Hours Calculator</h2>
+
+    <!-- Step 1: Standard Hours -->
+    <div class="section">
+      <div class="label">Enter Standard Hours:</div>
+      <div class="inputRow">
+        <input type="text" id="standardHHMM" class="inputBox" placeholder="HH:MM">
+        <input type="number" step="0.01" id="standardDecimal" class="inputBox" placeholder="Decimal">
+      </div>
+    </div>
+
+    <!-- Step 2: Regular Hours -->
+    <div class="section">
+      <div class="label">Now enter Regular Hours (60 days):</div>
+      <div class="inputRow">
+        <input type="text" id="regularHHMM" class="inputBox" placeholder="HH:MM">
+        <input type="number" step="0.01" id="regularDecimal" class="inputBox" placeholder="Decimal">
+      </div>
+    </div>
+
+    <!-- Step 3: Average Hours -->
+    <div class="outputSection">
+      <div class="outputTitle">Average Hours per Week (60 days)</div>
+      <div class="outputValue" id="averageOutput">--</div>
+    </div>
+
+    <!-- Step 4: NWPT Hours Button -->
+    <button onclick="showNWPT()">NWPT Hours</button>
+
+    <!-- Step 5: Final Output -->
+    <div class="finalOutput" id="finalOutput">--</div>
+  </div>
+
+  <script>
+    function hhmmToDecimal(hhmm) {
+      if (!hhmm) return 0;
+      let parts = hhmm.split(":");
+      let h = parseInt(parts[0]) || 0;
+      let m = parseInt(parts[1]) || 0;
+      return h + (m / 60);
+    }
+
+    function decimalToHHMM(decimal) {
+      if (!decimal) return "00:00";
+      let h = Math.floor(decimal);
+      let m = Math.round((decimal - h) * 60);
+      return String(h).padStart(2, "0") + ":" + String(m).padStart(2, "0");
+    }
+
+    // Sync Standard Hours
+    document.getElementById("standardHHMM").addEventListener("input", function() {
+      document.getElementById("standardDecimal").value = hhmmToDecimal(this.value).toFixed(2);
+    });
+    document.getElementById("standardDecimal").addEventListener("input", function() {
+      document.getElementById("standardHHMM").value = decimalToHHMM(parseFloat(this.value));
+    });
+
+    // Sync Regular Hours
+    document.getElementById("regularHHMM").addEventListener("input", function() {
+      document.getElementById("regularDecimal").value = hhmmToDecimal(this.value).toFixed(2);
+      calculate();
+    });
+    document.getElementById("regularDecimal").addEventListener("input", function() {
+      document.getElementById("regularHHMM").value = decimalToHHMM(parseFloat(this.value));
+      calculate();
+    });
+
+    function calculate() {
+      let regular = parseFloat(document.getElementById("regularDecimal").value) || 0;
+      let averagePerWeek = regular / 8.5;
+      let averageHHMM = decimalToHHMM(averagePerWeek);
+
+      document.getElementById("averageOutput").innerText = 
+        averagePerWeek.toFixed(2) + " (" + averageHHMM + ")";
+    }
+
+    function showNWPT() {
+      let regular = parseFloat(document.getElementById("regularDecimal").value) || 0;
+      let standard = parseFloat(document.getElementById("standardDecimal").value) || 0;
+      let averagePerWeek = regular / 8.5;
+
+      let finalValue, finalHHMM;
+      if (standard > averagePerWeek) {
+        finalValue = standard;
+        finalHHMM = decimalToHHMM(standard);
+      } else {
+        finalValue = averagePerWeek;
+        finalHHMM = decimalToHHMM(averagePerWeek);
+      }
+
+      document.getElementById("finalOutput").innerText = 
+        finalValue.toFixed(2) + " (" + finalHHMM + ")";
+    }
+  </script>
+</body>
+</html>
