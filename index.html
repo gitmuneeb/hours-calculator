@@ -205,6 +205,20 @@
       "X": 4
     };
 
+    // Enable CTA only when all inputs are valid
+    function checkInputs() {
+      const classSelected = document.getElementById("employeeClass").value !== "";
+      const minHours = document.getElementById("minimumDecimal").value !== "";
+      const regularHours = document.getElementById("regularDecimal").value !== "" && parseFloat(document.getElementById("regularDecimal").value) > 0;
+
+      const button = document.getElementById("ctaButton");
+      if (classSelected && minHours && regularHours) {
+        button.disabled = false;
+      } else {
+        button.disabled = true;
+      }
+    }
+
     // Handle Employee Class Selection
     document.getElementById("employeeClass").addEventListener("change", function() {
       let selectedClass = this.value;
@@ -260,4 +274,5 @@
         finalValue.toFixed(2) + " (" + finalHHMM + ")";
     }
   </script
+
 
