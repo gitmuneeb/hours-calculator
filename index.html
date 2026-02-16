@@ -111,8 +111,10 @@
       animation: pulse 2s infinite;
     }
 
-    .ctaButton:hover {
-      background-color: #005a9e;
+    .ctaButton:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+      animation: none;
     }
 
     @keyframes pulse {
@@ -147,7 +149,7 @@
 
     <!-- Step 1: Minimum Hours -->
     <div class="section">
-      <div class="label">Enter Minimum Hours:</div>
+      <div class="label">Minimum Hours (auto-filled):</div>
       <div class="inputRow">
         <input type="text" id="minimumHHMM" class="inputBox" placeholder="HH:MM" readonly>
         <input type="number" step="0.01" id="minimumDecimal" class="inputBox" placeholder="Decimal" readonly>
@@ -170,7 +172,9 @@
     </div>
 
     <!-- Step 4: Updated CTA Button -->
-    <button class="ctaButton" onclick="showNWPT()">Click here to check the hours to be coded</button>
+    <button id="ctaButton" class="ctaButton" onclick="showNWPT()" disabled>
+      Click here to check the hours to be coded
+    </button>
 
     <!-- Step 5: Final Output -->
     <div class="finalOutput" id="finalOutput">--</div>
@@ -207,22 +211,26 @@
       let minHours = classMinimums[selectedClass] || 0;
 
       // Update Minimum Hours fields
-      document.getElementById("minimumDecimal").value = minHours.toFixed(2);
-      document.getElementById("minimumHHMM").value = decimalToHHMM(minHours);
+      document.getElementById("minimumDecimal").value = minHours ? minHours.toFixed(2) : "";
+      document.getElementById("minimumHHMM").value = minHours ? decimalToHHMM(minHours) : "";
 
       // Show reference
       document.getElementById("minimumReference").innerText = 
-        minHours.toFixed(2) + " (" + decimalToHHMM(minHours) + ")";
+        minHours > 0 ? minHours.toFixed(2) + " (" + decimalToHHMM(minHours) + ")" : "--";
+
+      checkInputs();
     });
 
     // Sync Regular Hours
     document.getElementById("regularHHMM").addEventListener("input", function() {
       document.getElementById("regularDecimal").value = hhmmToDecimal(this.value).toFixed(2);
       calculate();
+      checkInputs();
     });
     document.getElementById("regularDecimal").addEventListener("input", function() {
       document.getElementById("regularHHMM").value = decimalToHHMM(parseFloat(this.value));
       calculate();
+      checkInputs();
     });
 
     function calculate() {
@@ -252,3 +260,4 @@
         finalValue.toFixed(2) + " (" + finalHHMM + ")";
     }
   </script
+
