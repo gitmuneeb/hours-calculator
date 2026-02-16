@@ -119,12 +119,31 @@
   <div class="calculator">
     <h2>Hours Calculator</h2>
 
-    <!-- Step 1: Standard Hours -->
+    <!-- Step 0: Employee Class -->
     <div class="section">
-      <div class="label">Enter Standard Hours:</div>
+      <div class="label">Select Employee Class:</div>
+      <select id="employeeClass" class="inputBox">
+        <option value="">-- Select Class --</option>
+        <option value="F">Class F</option>
+        <option value="H">Class H</option>
+        <option value="Q">Class Q</option>
+        <option value="R">Class R</option>
+        <option value="X">Class X</option>
+      </select>
+    </div>
+
+    <!-- Display Minimum Hours Reference -->
+    <div class="outputSection">
+      <div class="outputTitle">Minimum Hours for Selected Class</div>
+      <div class="outputValue" id="minimumReference">--</div>
+    </div>
+
+    <!-- Step 1: Minimum Hours -->
+    <div class="section">
+      <div class="label">Enter Minimum Hours:</div>
       <div class="inputRow">
-        <input type="text" id="standardHHMM" class="inputBox" placeholder="HH:MM">
-        <input type="number" step="0.01" id="standardDecimal" class="inputBox" placeholder="Decimal">
+        <input type="text" id="minimumHHMM" class="inputBox" placeholder="HH:MM" readonly>
+        <input type="number" step="0.01" id="minimumDecimal" class="inputBox" placeholder="Decimal" readonly>
       </div>
     </div>
 
@@ -166,12 +185,27 @@
       return String(h).padStart(2, "0") + ":" + String(m).padStart(2, "0");
     }
 
-    // Sync Standard Hours
-    document.getElementById("standardHHMM").addEventListener("input", function() {
-      document.getElementById("standardDecimal").value = hhmmToDecimal(this.value).toFixed(2);
-    });
-    document.getElementById("standardDecimal").addEventListener("input", function() {
-      document.getElementById("standardHHMM").value = decimalToHHMM(parseFloat(this.value));
+    // Employee Class Minimum Hours Mapping
+    const classMinimums = {
+      "F": 30,
+      "H": 20,
+      "Q": 20,
+      "R": 30,
+      "X": 4
+    };
+
+    // Handle Employee Class Selection
+    document.getElementById("employeeClass").addEventListener("change", function() {
+      let selectedClass = this.value;
+      let minHours = classMinimums[selectedClass] || 0;
+
+      // Update Minimum Hours fields
+      document.getElementById("minimumDecimal").value = minHours.toFixed(2);
+      document.getElementById("minimumHHMM").value = decimalToHHMM(minHours);
+
+      // Show reference
+      document.getElementById("minimumReference").innerText = 
+        minHours.toFixed(2) + " (" + decimalToHHMM(minHours) + ")";
     });
 
     // Sync Regular Hours
@@ -195,13 +229,13 @@
 
     function showNWPT() {
       let regular = parseFloat(document.getElementById("regularDecimal").value) || 0;
-      let standard = parseFloat(document.getElementById("standardDecimal").value) || 0;
+      let minimum = parseFloat(document.getElementById("minimumDecimal").value) || 0;
       let averagePerWeek = regular / 8.5;
 
       let finalValue, finalHHMM;
-      if (standard > averagePerWeek) {
-        finalValue = standard;
-        finalHHMM = decimalToHHMM(standard);
+      if (minimum > averagePerWeek) {
+        finalValue = minimum;
+        finalHHMM = decimalToHHMM(minimum);
       } else {
         finalValue = averagePerWeek;
         finalHHMM = decimalToHHMM(averagePerWeek);
