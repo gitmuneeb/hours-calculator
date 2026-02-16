@@ -98,7 +98,8 @@
       text-align: center;
     }
 
-    button {
+    /* Animated CTA Button */
+    .ctaButton {
       padding: 12px;
       font-size: 16px;
       font-weight: bold;
@@ -107,11 +108,17 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      transition: background 0.2s ease;
+      animation: pulse 2s infinite;
     }
 
-    button:hover {
+    .ctaButton:hover {
       background-color: #005a9e;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 0 0 rgba(0,120,215,0.7); }
+      50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(0,120,215,0.7); }
+      100% { transform: scale(1); box-shadow: 0 0 0 rgba(0,120,215,0.7); }
     }
   </style>
 </head>
@@ -162,8 +169,8 @@
       <div class="outputValue" id="averageOutput">--</div>
     </div>
 
-    <!-- Step 4: NWPT Hours Button -->
-    <button onclick="showNWPT()">NWPT Hours</button>
+    <!-- Step 4: Updated CTA Button -->
+    <button class="ctaButton" onclick="showNWPT()">Click here to check the hours to be coded</button>
 
     <!-- Step 5: Final Output -->
     <div class="finalOutput" id="finalOutput">--</div>
@@ -244,6 +251,4 @@
       document.getElementById("finalOutput").innerText = 
         finalValue.toFixed(2) + " (" + finalHHMM + ")";
     }
-  </script>
-</body>
-</html>
+  </script
