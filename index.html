@@ -1,4 +1,82 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>We’ve Moved!</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+      background: #f9f9f9;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    p {
+      font-size: 18px;
+      color: #555;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 14px 28px;
+      margin-top: 20px;
+      background: linear-gradient(90deg, #ff6a00, #ee0979);
+      color: #fff;
+      font-size: 20px;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      animation: pulse 1.5s infinite;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .cta-button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <h1>🎉 We’ve Moved!</h1>
+  <p>All the tools and resources you love are now available at our new location.</p>
+  <a href="https://internal.partyrock.aws.dev/u/bashimun/Ni2yaisAd/hour-calculation" 
+     class="cta-button">✨ Click Here ✨</a>
+
+  <script>
+    // Optional: Add a little bounce effect when clicked
+    const button = document.querySelector('.cta-button');
+    button.addEventListener('click', () => {
+      button.style.transform = 'scale(0.95)';
+      setTimeout(() => {
+        button.style.transform = 'scale(1.1)';
+        setTimeout(() => {
+          button.style.transform = 'scale(1)';
+        }, 150);
+      }, 150);
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+<!--<!DOCTYPE html>
 <html>
 <head>
   <title>Hours Calculator</title>
@@ -128,7 +206,7 @@
   <div class="calculator">
     <h2>Hours Calculator</h2>
 
-    <!-- Step 0: Employee Class -->
+    <!-- Step 0: Employee Class --><!--
     <div class="section">
       <div class="label">Select Employee Class:</div>
       <select id="employeeClass" class="inputBox">
@@ -141,13 +219,13 @@
       </select>
     </div>
 
-    <!-- Display Minimum Hours Reference -->
+    <!-- Display Minimum Hours Reference --><!--
     <div class="outputSection">
       <div class="outputTitle">Minimum Hours for Selected Class</div>
       <div class="outputValue" id="minimumReference">--</div>
     </div>
 
-    <!-- Step 1: Minimum Hours -->
+    <!-- Step 1: Minimum Hours --><!--
     <div class="section">
       <div class="label">Minimum Hours (auto-filled):</div>
       <div class="inputRow">
@@ -157,7 +235,7 @@
     </div>
 
     <!-- Step 2: Regular Hours -->
-    <div class="section">
+ <!--   <div class="section">
       <div class="label">Now enter Regular Hours (60 days):</div>
       <div class="inputRow">
         <input type="text" id="regularHHMM" class="inputBox" placeholder="HH:MM">
@@ -166,18 +244,18 @@
     </div>
 
     <!-- Step 3: Average Hours -->
-    <div class="outputSection">
+   <!-- <div class="outputSection">
       <div class="outputTitle">Average Hours per Week (60 days)</div>
       <div class="outputValue" id="averageOutput">--</div>
     </div>
 
     <!-- Step 4: Updated CTA Button -->
-    <button id="ctaButton" class="ctaButton" onclick="showNWPT()" disabled>
+ <!--   <button id="ctaButton" class="ctaButton" onclick="showNWPT()" disabled>
       Click here to check the hours to be coded
     </button>
 
     <!-- Step 5: Final Output -->
-    <div class="finalOutput" id="finalOutput">--</div>
+<!--    <div class="finalOutput" id="finalOutput">--</div>
   </div>
 
   <script>
@@ -274,6 +352,8 @@
         finalValue.toFixed(2) + " (" + finalHHMM + ")";
     }
   </script>
+-->
+
 
 
 
